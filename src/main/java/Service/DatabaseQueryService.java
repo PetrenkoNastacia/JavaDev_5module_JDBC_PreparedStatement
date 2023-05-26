@@ -17,7 +17,7 @@ public class DatabaseQueryService {
 
     private final Connection connection = Database.getInstance().getConnection();
 
-    public List<FindLongestProject> findLongestProject(){
+    public List<selectClasses.FindLongestProject> findLongestProject(){
         List<FindLongestProject> longestProjects = new ArrayList<>();
 
         try(Statement statement = connection.createStatement()){

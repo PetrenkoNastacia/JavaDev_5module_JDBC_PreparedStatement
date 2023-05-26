@@ -1,22 +1,22 @@
 package Service;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import Database.Database;
 
 public class DatabaseInitService {
+
+    private static final String initDBfileURL = "sql/init_db.sql";
+
     public static void main(String[] args) {
-        String initDBfileURL = "sql/init_db.sql";
-        Connection connection = Database.getInstance().getConnection();
-        try (Statement statement = connection.createStatement()) {
-            String SQL = Files.readString(Path.of(initDBfileURL));
-            statement.executeUpdate(SQL);
-        } catch (SQLException | IOException e) {
+
+        SQLFileReader sqlFileReader = new SQLFileReader();
+
+        try {
+            String sql = sqlFileReader.readFile(initDBfileURL);
+            Database.sendSQLExecute(sql);
+        } catch (IOException | SQLException e) {
             e.printStackTrace();
         }
     }
