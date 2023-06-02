@@ -10,7 +10,7 @@ import java.util.List;
 
 public class DatabaseQueryService {
 
-    List<FindLongestProject> findLongestProjects(){
+    public List<FindLongestProject> findLongestProjects(){
         List<FindLongestProject> longestProjects = new ArrayList<>();
 
         String sql = SQLFileReader.readFile("sql/find_longest_project.sql");
@@ -30,7 +30,7 @@ public class DatabaseQueryService {
         return longestProjects;
     }
 
-    List<FindMaxProjectsClient> findMaxProjectsClients(){
+    public List<FindMaxProjectsClient> findMaxProjectsClients(){
         List<FindMaxProjectsClient> maxProjectsClients = new ArrayList<>();
 
         String sql = SQLFileReader.readFile("sql/find_max_projects_client.sql");
@@ -49,7 +49,7 @@ public class DatabaseQueryService {
         return maxProjectsClients;
     }
 
-    List<FindMaxSalaryWorker> findMaxSalaryWorkers(){
+    public List<FindMaxSalaryWorker> findMaxSalaryWorkers(){
         List<FindMaxSalaryWorker> maxSalaryWorkers = new ArrayList<>();
 
         String sql = SQLFileReader.readFile("sql/find_max_salary_worker.sql");
@@ -69,7 +69,7 @@ public class DatabaseQueryService {
         return maxSalaryWorkers;
     }
 
-    List<FindYoungestEldestWorker> findYoungestEldestWorkers(){
+    public List<FindYoungestEldestWorker> findYoungestEldestWorkers(){
         List<FindYoungestEldestWorker> youngestEldestWorkers = new ArrayList<>();
 
         String sql = SQLFileReader.readFile("sql/find_youngest_eldest_workers.sql");
@@ -89,7 +89,7 @@ public class DatabaseQueryService {
         return youngestEldestWorkers;
     }
 
-    List<PrintProjectPrices> printProjectPrices(){
+    public List<PrintProjectPrices> printProjectPrices(){
         List<PrintProjectPrices> projectPrices = new ArrayList<>();
 
         String sql = SQLFileReader.readFile("sql/print_project_prices.sql");
