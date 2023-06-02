@@ -1,22 +1,32 @@
 package Service;
 
-import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.sql.Connection;
 import java.sql.SQLException;
-
-import Database.Database;
 
 public class DatabaseInitService {
 
-    private static final String initDBfileURL = "sql/init_db.sql";
-
     public static void main(String[] args) {
-
-        SQLFileReader sqlFileReader = new SQLFileReader();
-
+        String initDBfile = "sql/init_db.sql";
         try {
-            String sql = sqlFileReader.readFile(initDBfileURL);
-            Database.sendSQLExecute(sql);
-        } catch (IOException | SQLException e) {
+            BufferedReader br = new BufferedReader(new FileReader(initDBfile));
+            Connection connection = Database.getInstance().getConnection();
+            String line;
+            StringBuilder sb = new StringBuilder();
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+                if (line.endsWith(";")) {
+                    try {
+                        connection.createStatement().executeUpdate(sb.toString());
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    sb.setLength(0);
+                }
+            }
+           connection.close();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

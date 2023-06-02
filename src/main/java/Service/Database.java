@@ -1,14 +1,13 @@
-package Database;
+package Service;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ResourceBundle;
 
 public class Database {
     private static final Database database = new Database();
-    private static Connection connection;
+    private Connection connection;
     private static final String dbUrl = "jdbcURL";
 
     private Database() {
@@ -28,15 +27,11 @@ public class Database {
         return connection;
     }
 
-    public static void sendSQLExecute(String sql) throws SQLException {
-
-        Database database = Database.getInstance();
-        connection = database.getConnection();
-
-        Statement statement = connection.createStatement();
-        statement.execute(sql);
-
-        statement.close();
-        connection.close();
+    public void close() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -3,7 +3,7 @@ INSERT INTO worker (id, name, birthday, level, salary) VALUES
 (2, 'Karen', '1991-01-10', 'Middle', 3000),
 (3, 'Helen', '1992-01-30', 'Senior', 5200),
 (4, 'Linda', '1990-05-25', 'Senior', 4100),
-(5, 'Phobe', '1988-06-16', 'Middle', 3000),
+(5, 'Phoebe', '1988-06-16', 'Middle', 3000),
 (6, 'Piper', '1988-07-04', 'Middle', 3000),
 (7, 'Prue', '1982-08-17', 'Middle', 3000),
 (8, 'David', '1994-03-13', 'Junior', 2000),
