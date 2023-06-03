@@ -4,9 +4,9 @@ import java.sql.*;
 
 public class DatabasePopulateService {
 
-    static final String clientSQL = "INSERT INTO client (name) VALUES (?,?)";
-    static final String workerSQL = "INSERT INTO worker (name, birthday, level, salary) VALUES (?,?,?,?,?)";
-    static final String projectSQL = "INSERT INTO project (client_ID, start_date, finish_date) VALUES (?,?,?,?)";
+    static final String clientSQL = "INSERT INTO client (id, name) VALUES (?,?)";
+    static final String workerSQL = "INSERT INTO worker (id, name, birthday, level, salary) VALUES (?,?,?,?,?)";
+    static final String projectSQL = "INSERT INTO project (id, client_ID, start_date, finish_date) VALUES (?,?,?,?)";
     static final String projectWorkerSQL = "INSERT INTO project_worker (project_ID, worker_ID) VALUES (?,?)";
 
     public static void main(String[] args) throws SQLException {
