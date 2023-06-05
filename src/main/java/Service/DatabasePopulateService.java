@@ -1,120 +1,100 @@
 package Service;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.*;
 
 public class DatabasePopulateService {
+    public static void main(String[] args) throws SQLException, IOException {
+        DatabasePopulateService databasePopulateService = new DatabasePopulateService();
+        databasePopulateService.insertWorkers();
+        databasePopulateService.insertClients();
+        databasePopulateService.insertProjects();
+        databasePopulateService.insertProjectWorkers();
+    }
+    private static final String clientSQL = "INSERT INTO client (id, name) VALUES (?,?)";
+    private static final String workerSQL = "INSERT INTO worker (id, name, birthday, level, salary) VALUES (?,?,?,?,?)";
+    private static final String projectSQL = "INSERT INTO project (id, client_ID, start_date, finish_date) VALUES (?,?,?,?)";
+    private static final String projectWorkerSQL = "INSERT INTO project_worker (project_ID, worker_ID) VALUES (?,?)";
+    private final Connection connection = Database.getInstance().getConnection();
 
-    static final String clientSQL = "INSERT INTO client (id, name) VALUES (?,?)";
-    static final String workerSQL = "INSERT INTO worker (id, name, birthday, level, salary) VALUES (?,?,?,?,?)";
-    static final String projectSQL = "INSERT INTO project (id, client_ID, start_date, finish_date) VALUES (?,?,?,?)";
-    static final String projectWorkerSQL = "INSERT INTO project_worker (project_ID, worker_ID) VALUES (?,?)";
-
-    public static void main(String[] args) throws SQLException {
-        Connection connection = Database.getInstance().getConnection();
-        connection.setAutoCommit(false);
-
-        //insert workers
+    private void insertWorkers() throws IOException, SQLException {
         PreparedStatement statementWorker = connection.prepareStatement(workerSQL);
 
-        int[] workerID = {1,2,3,4,5,6,7,8,9,10};
-        String[] workerNames = {
-                "Anastasiia", "Karen", "Helen", "Linda", "Phoebe", "Piper", "Prue", "David", "James", "Roman"
-        };
-        Date[] workerBirthdays = {
-                Date.valueOf("1994-02-23"),
-                Date.valueOf("1991-01-10"),
-                Date.valueOf("1992-01-30"),
-                Date.valueOf("1990-05-25"),
-                Date.valueOf("1988-06-16"),
-                Date.valueOf("1988-07-04"),
-                Date.valueOf("1982-08-17"),
-                Date.valueOf("1994-03-13"),
-                Date.valueOf("1990-02-27"),
-                Date.valueOf("1997-06-19"),
-        };
-        String[] workerLevel = {
-                "Middle", "Middle", "Senior", "Senior", "Middle", "Middle", "Middle", "Junior", "Junior", "Trainee"
-        };
-        int[] workerSalary = {3500, 3000, 5200, 4100, 3000, 3000, 3000, 2000, 2000, 800};
+        FileReader fr = new FileReader("src/main/java/Worker");
+        BufferedReader br = new BufferedReader(fr);
 
-        for (int i = 0; i < workerID.length; i++) {
-            statementWorker.setInt(1, workerID[i]);
-            statementWorker.setString(2, workerNames[i]);
-            statementWorker.setDate(3, Date.valueOf(String.valueOf(workerBirthdays[i])));
-            statementWorker.setString(4, workerLevel[i]);
-            statementWorker.setInt(5, workerSalary[i]);
+        int workerID = 1;
+        while (br.ready()) {
+            String line = br.readLine();
+            String[] values = line.split(",");
+
+            statementWorker.setString(1, ""+workerID++);
+            statementWorker.setString(2, values[0]);
+            statementWorker.setDate(3, Date.valueOf(values[1]));
+            statementWorker.setString(4, values[2]);
+            statementWorker.setInt(5, Integer.parseInt(values[3]));
 
             statementWorker.addBatch();
         }
         statementWorker.executeBatch();
-        statementWorker.close();
+    }
 
-        //insert clients
+    private void insertClients() throws IOException, SQLException {
         PreparedStatement statementClient = connection.prepareStatement(clientSQL);
-        int[] clientID = {1,2,3,4,5};
-        String[] clientNames = {"Hideo", "Hidetaka", "Shigeru", "John", "Will"};
 
-        for (int i = 0; i < clientID.length; i++) {
-            statementClient.setInt(1, clientID[i]);
-            statementClient.setString(2, clientNames[i]);
+        FileReader fr = new FileReader("src/main/java/Client");
+        BufferedReader br = new BufferedReader(fr);
+
+        int clientID = 1;
+        while (br.ready()) {
+            String line = br.readLine();
+            String[] values = line.split(",");
+            statementClient.setInt(1, clientID++);
+            statementClient.setString(2, values[1]);
+
             statementClient.addBatch();
         }
         statementClient.executeBatch();
+    }
 
-        //insert projects
+    private void insertProjects() throws IOException, SQLException {
         PreparedStatement statementProject = connection.prepareStatement(projectSQL);
-        int[] projectID = {1,2,3,4,5,6,7,8,9,10};
-        int[] projectClientID = {1,2,3,4,5,1,2,3,4,5};
-        Date[] startDates = {
-                Date.valueOf("2026-06-06"),
-                Date.valueOf("2024-04-14"),
-                Date.valueOf("2023-11-11"),
-                Date.valueOf("2025-05-05"),
-                Date.valueOf("2026-06-06"),
-                Date.valueOf("2024-01-19"),
-                Date.valueOf("2023-08-08"),
-                Date.valueOf("2026-06-06"),
-                Date.valueOf("2027-07-07"),
-                Date.valueOf("2024-04-04"),
-                };
-        Date[] finishDates = {
-                Date.valueOf("2030-12-12"),
-                Date.valueOf("2024-05-15"),
-                Date.valueOf("2024-11-12"),
-                Date.valueOf("2026-06-16"),
-                Date.valueOf("2027-07-27"),
-                Date.valueOf("2028-08-18"),
-                Date.valueOf("2027-07-17"),
-                Date.valueOf("2028-03-13"),
-                Date.valueOf("2030-03-30"),
-                Date.valueOf("2024-05-05"),
-        };
 
-        for (int i = 0; i < projectID.length; i++) {
-            statementProject.setInt(1, projectID[i]);
-            statementProject.setInt(2, projectClientID[i]);
-            statementProject.setDate(3, Date.valueOf(String.valueOf(startDates[i])));
-            statementProject.setDate(4, Date.valueOf(String.valueOf(finishDates[i])));
+        FileReader fr = new FileReader("src/main/java/Project");
+        BufferedReader br = new BufferedReader(fr);
+
+        int projectID = 1;
+        while (br.ready()) {
+            String line = br.readLine();
+            String[] values = line.split(",");
+            statementProject.setInt(1, projectID++);
+            statementProject.setInt(2, Integer.parseInt(values[1]));
+            statementProject.setDate(3, Date.valueOf(String.valueOf(values[2])));
+            statementProject.setDate(4, Date.valueOf(String.valueOf(values[3])));
 
             statementProject.addBatch();
         }
         statementProject.executeBatch();
+    }
 
-        //insert project worker
+    private void insertProjectWorkers() throws IOException, SQLException {
         PreparedStatement statementProjectWorker = connection.prepareStatement(projectWorkerSQL);
 
-        int[] projectsID = {1,2,3,4,5,6,7,8,9,10};
-        int[] workersID = {1,2,3,4,5,6,7,8,9,10};
+        FileReader fr = new FileReader("src/main/java/ProjectWorker");
+        BufferedReader br = new BufferedReader(fr);
 
-        for (int i = 0; i < projectsID.length; i++) {
-            statementProjectWorker.setInt(1, projectsID[i]);
-            statementProjectWorker.setInt(2, workersID[i]);
+        int projectID = 1;
+        int workerID = 1;
+        while (br.ready()) {
+            String line = br.readLine();
+            String[] values = line.split(",");
+            statementProjectWorker.setInt(1, Integer.parseInt(values[0]));
+            statementProjectWorker.setInt(2, Integer.parseInt(values[1]));
+
             statementProjectWorker.addBatch();
         }
-        statementWorker.executeBatch();
-
-        connection.commit();
-        connection.rollback();
-        connection.setAutoCommit(true);
+        statementProjectWorker.executeBatch();
     }
 }
