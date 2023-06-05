@@ -30,7 +30,7 @@ public class DatabasePopulateService {
             String line = br.readLine();
             String[] values = line.split(",");
 
-            statementWorker.setString(1, ""+workerID++);
+            statementWorker.setString(1, "" + workerID++);
             statementWorker.setString(2, values[0]);
             statementWorker.setDate(3, Date.valueOf(values[1]));
             statementWorker.setString(4, values[2]);
@@ -71,8 +71,8 @@ public class DatabasePopulateService {
             String[] values = line.split(",");
             statementProject.setInt(1, projectID++);
             statementProject.setInt(2, Integer.parseInt(values[1]));
-            statementProject.setDate(3, Date.valueOf(String.valueOf(values[2])));
-            statementProject.setDate(4, Date.valueOf(String.valueOf(values[3])));
+            statementProject.setDate(3, Date.valueOf(values[2]));
+            statementProject.setDate(4, Date.valueOf(values[3]));
 
             statementProject.addBatch();
         }
@@ -85,8 +85,6 @@ public class DatabasePopulateService {
         FileReader fr = new FileReader("src/main/java/ProjectWorker");
         BufferedReader br = new BufferedReader(fr);
 
-        int projectID = 1;
-        int workerID = 1;
         while (br.ready()) {
             String line = br.readLine();
             String[] values = line.split(",");
