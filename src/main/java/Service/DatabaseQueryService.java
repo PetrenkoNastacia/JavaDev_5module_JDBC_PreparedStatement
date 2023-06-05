@@ -30,7 +30,6 @@ public class DatabaseQueryService {
                         .name(rs.getString("NAME"))
                         .monthCount(rs.getInt("MONTH_COUNT"))
                         .build());
-                statement.close();
             }
         } catch (Exception e){
             e.printStackTrace();
@@ -49,7 +48,6 @@ public class DatabaseQueryService {
                         .name(rs.getString("NAME"))
                         .count(rs.getInt("PROJECT_COUNT"))
                         .build());
-                statement.close();
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -69,7 +67,6 @@ public class DatabaseQueryService {
                         .name(rs.getString("NAME"))
                         .salary(rs.getInt("SALARY"))
                         .build());
-                statement.close();
             }
         } catch (Exception e){
             e.printStackTrace();
@@ -89,7 +86,6 @@ public class DatabaseQueryService {
                         .name(rs.getString("NAME"))
                         .birthday(LocalDate.parse(rs.getString("BIRTHDAY")))
                         .build());
-                statement.close();
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -108,7 +104,6 @@ public class DatabaseQueryService {
                         .id(rs.getString("NAME"))
                         .price(rs.getInt("PRICE"))
                         .build());
-                statement.close();
             }
         }catch (Exception e){
             e.printStackTrace();
